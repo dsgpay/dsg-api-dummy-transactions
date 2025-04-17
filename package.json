@@ -1,0 +1,34 @@
+{
+  "name": "dsg-api-dummy-transactions",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": ">=20.0.0 <21.0.0"
+  },
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^9.7.0",
+    "axios": "^1.8.4",
+    "cors": "^2.8.5",
+    "debug": "^4.4.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-jwt": "^8.5.1",
+    "moment-timezone": "^0.5.48",
+    "mongodb": "^6.15.0",
+    "morgan": "^1.10.0",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

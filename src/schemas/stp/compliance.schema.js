@@ -1,0 +1,26 @@
+import { string, number, boolean, date, object, mixed } from "yup";
+
+export const complianceSchema = object().shape({
+  complianceAmendPass: boolean(),
+  complianceBlacklistPassBen: boolean(),
+  complianceBlacklistPassCus: boolean(),
+  complianceCommonBenAcctPass: boolean(),
+  complianceCommonCusTelPass: boolean(),
+  complianceCumulativePass: boolean(),
+  complianceFirstTransPass: boolean(),
+  complianceHold: string(),
+  complianceMemoPass: boolean(),
+  complianceRestrictedCountryPass: boolean(),
+  complianceSpecialInterestedCountryPass: boolean(),
+  complianceTransactionText: string(),
+  complianceTransactionThresholdPass: boolean(),
+  complianceWC1PassBen: boolean(),
+  complianceWC1PassCus: boolean(),
+  complianceWhitelistPass: boolean(),
+  complianCountryStatus: string(),
+  groupType: string(),
+  reportStatus: string(),
+  sanctionsCheckStatus: string(),
+  sanctionsLog: string(),
+  worldcheckStatus: string(),
+});
