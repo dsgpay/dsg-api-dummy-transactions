@@ -3,8 +3,7 @@ import { ObjectId } from "mongodb"; // For generating ObjectId
 
 const generateObjectId = () => new ObjectId();
 
-export const generateDummyData = (status = "TRANSFERRING") => {
-
+export const generateDummyData = (status = "CREATED") => {
   const amount = parseFloat(faker.finance.amount({ min: 10, max: 1999999 }));
   const rate = 1;
   const country = faker.address.countryCode("alpha-2");
@@ -25,10 +24,9 @@ export const generateDummyData = (status = "TRANSFERRING") => {
   return {
     _id: generateObjectId(),
     amount: amount,
-    approvedDate: faker.date.recent(),
     bankRate: rate,
     bankRateAt: rateAt,
-    beneficiaryAccountNumber: faker.finance.accountNumber({ min: 8, max: 16 }),
+    beneficiaryAccountNumber: faker.finance.accountNumber({ length: 12 }),
     beneficiaryBankCountryCode: country,
     beneficiaryCountryCode: country,
     beneficiaryName: faker.name.fullName(),
@@ -49,6 +47,8 @@ export const generateDummyData = (status = "TRANSFERRING") => {
     paymentAddress: paymentAddress,
     paymentStatus,
     product: product,
+    senderCurrencyCode: product.slice(0, 3),
+    beneficiaryCurrencyCode: product.slice(3, 6),
     senderName: faker.name.fullName(),
     transactionType: transactionType,
     updatedAt: faker.date.recent(),

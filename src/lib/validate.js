@@ -1,8 +1,8 @@
-import { ValidationError } from "yup";
+import { ValidationError, ObjectSchema } from "yup";
 
 /**
  * Creates a middleware to validate the request body using Yup.
- * @param {Yup.ObjectSchema} schema Yup validation schema
+ * @param {ObjectSchema} schema Yup validation schema
  */
 export const validateSchema = async (schema, data) => {
   try {
