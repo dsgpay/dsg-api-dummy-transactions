@@ -1,1 +1,1 @@
-# dsg-api-dummy-transactions
+# dsg-api-sandbox
