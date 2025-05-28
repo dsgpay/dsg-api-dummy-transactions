@@ -40,10 +40,10 @@
  *                 _id:
  *                   type: string
  *                   example: "6650c05a60e34721dc2f2301"
- *                 status:
+ *                 paymentStatus:
  *                   type: string
- *                   enum: [pending, completed, failed]
- *                   example: "pending"
+ *                   enum: [CREATED]
+ *                   example: "CREATED"
  *                 createdAt:
  *                   type: string
  *                   format: date-time
