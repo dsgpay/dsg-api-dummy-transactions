@@ -26,9 +26,9 @@
  *                 example: 100
  *                 required: true
  *               type:
- *                 enum: [global, local]
- *                 example: local
- *                 required: true
+ *                 type: string
+ *                 enum: ["global", "local"]
+ *                 default: local
  *     responses:
  *       201:
  *         description: A fake payment transaction
@@ -42,8 +42,19 @@
  *                   example: "6650c05a60e34721dc2f2301"
  *                 paymentStatus:
  *                   type: string
- *                   enum: [CREATED]
  *                   example: "CREATED"
+ *                 corpId:
+ *                   type: string
+ *                   example: DSGRFB"
+ *                 product:
+ *                   type: string
+ *                   example: "USDAUD"
+ *                 amount:
+ *                   type: number
+ *                   example: 100
+ *                 externalReference:
+ *                   type: string
+ *                   example: "AM8yIOPuYv"
  *                 createdAt:
  *                   type: string
  *                   format: date-time

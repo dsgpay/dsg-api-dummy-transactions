@@ -1,5 +1,8 @@
 // @ts-check
 import { Router } from "express";
+import { createPayoutInstuction } from "./stpPayment.ctrl.js";
+import { validateRequest } from "../middlewares/validation.js";
+import { createPayoutInstuctionSchema } from "./stpPayment.schema.js";
 
 const router = Router();
 
@@ -11,14 +14,23 @@ const router = Router();
  * @param {import('express').NextFunction} next - Express next middleware function
  * @returns {void} Responds with "pong"
  */
-router.post("/create", async (req, res, next) => {
-  try {
-    const data = req.body ?? {};
+router.post(
+  "/create",
+  validateRequest(createPayoutInstuctionSchema, "body"),
+  async (req, res, next) => {
+    try {
+      const data = req.body ?? {};
 
-    res.status(200).json({});
-  } catch (error) {
-    next(error);
+      /**
+       * @param {import("./stpPayment.schema.js").CreatePayoutInstruction} data
+       */
+      const result = await createPayoutInstuction(data);
+
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export default router;

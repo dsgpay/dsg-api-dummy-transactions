@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:3000
+
+# @name auth
+GET http://localhost:3000/dev/token
+
+### [auth] Create Payout Instruction
+POST http://localhost:3000/stp-payment/create
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "corpId": "DSGRFB",
+    "product": "USDAUD",
+    "amount": 10
+}
