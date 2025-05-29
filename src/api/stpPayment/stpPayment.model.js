@@ -29,6 +29,8 @@ import DB from "../../config/db.js";
  * @property {string} payoutConfirmId
  * @property {string} statementId
  * @property {string} statementTicketFeeId
+ * @property {string} statusReason
+ * @property {string} statementRefundId
  */
 
 /** @typedef {import("mongodb").Collection<STPPaymentModel>} STPPaymentCollection */
@@ -111,6 +113,7 @@ export function transformSTP(data) {
     "approvedDate",
     "payoutConfirmId",
     "statementTicketFeeId",
+    "statementRefundId",
   ];
 
   fields.forEach((field) => {

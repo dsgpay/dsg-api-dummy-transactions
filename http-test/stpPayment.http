@@ -46,3 +46,15 @@ Content-Type: application/json
 {
     "_id": "{{paymentCreated.response.body._id}}"
 }
+
+
+### [auth] Approved With Pricing
+# @name paymentSettlementWithSOA
+PUT http://localhost:3000/stp-payment/settlement
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "_id": "{{paymentCreated.response.body._id}}",
+    "paymentStatus": "FAILED"
+}

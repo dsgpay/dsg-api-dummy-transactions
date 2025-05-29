@@ -1,5 +1,5 @@
 // @ts-check
-import { ObjectId } from 'mongodb';
+import { ObjectId } from "mongodb";
 import { number, object, string } from "yup";
 
 /**
@@ -33,6 +33,12 @@ import { number, object, string } from "yup";
  */
 
 /**
+ * @typedef {object} SettlementPayoutInstruction
+ * @property {string} _id - ObjectId - str
+ * @property {'SETTLED' | 'FAILED'} paymentStatus
+ */
+
+/**
  * @type {import('yup').ObjectSchema<CreatePayoutInstruction>}
  */
 export const createPayoutInstuctionSchema = object({
@@ -45,6 +51,14 @@ export const createPayoutInstuctionSchema = object({
 /**
  * @type {import('yup').ObjectSchema<PayoutInstructionId>}
  */
-export const payoutInstuctionSchema = object({
+export const payoutIdSchema = object({
   _id: string().required(),
+}).unknown(false);
+
+/**
+ * @type {import('yup').ObjectSchema<SettlementPayoutInstruction>}
+ */
+export const settlementPayoutSchema = object({
+  _id: string().required(),
+  paymentStatus: string().oneOf(["SETTLED", "FAILED"]).required(),
 }).unknown(false);

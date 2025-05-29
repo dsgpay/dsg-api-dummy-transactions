@@ -5,11 +5,13 @@ import {
   ratesPayoutInstuction,
   approvePayoutInstuction,
   processPayoutInstuction,
+  settlementPayoutInstuction,
 } from "./stpPayment.ctrl.js";
 import { validateRequest } from "../middlewares/validation.js";
 import {
-  payoutInstuctionSchema,
+  payoutIdSchema,
   createPayoutInstuctionSchema,
+  settlementPayoutSchema,
 } from "./stpPayment.schema.js";
 
 const router = Router();
@@ -42,8 +44,8 @@ router.post(
 );
 
 /**
- * POST endpoint to fixing rates
- * @route POST /stp/create
+ * PUT endpoint to fixing rates
+ * @route PUT /stp/create
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  * @param {import('express').NextFunction} next - Express next middleware function
@@ -51,7 +53,7 @@ router.post(
  */
 router.put(
   "/rates",
-  validateRequest(payoutInstuctionSchema, "body"),
+  validateRequest(payoutIdSchema, "body"),
   async (req, res, next) => {
     try {
       const data = req.body ?? {};
@@ -69,8 +71,8 @@ router.put(
 );
 
 /**
- * POST endpoint to approve and getting pricing
- * @route POST /stp/approve
+ * PUT endpoint to approve and getting pricing
+ * @route PUT /stp/approve
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  * @param {import('express').NextFunction} next - Express next middleware function
@@ -78,7 +80,7 @@ router.put(
  */
 router.put(
   "/approve",
-  validateRequest(payoutInstuctionSchema, "body"),
+  validateRequest(payoutIdSchema, "body"),
   async (req, res, next) => {
     try {
       const data = req.body ?? {};
@@ -96,8 +98,8 @@ router.put(
 );
 
 /**
- * POST endpoint to process and import SOA
- * @route POST /stp/process
+ * PUT endpoint to process and import SOA
+ * @route PUT /stp/process
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  * @param {import('express').NextFunction} next - Express next middleware function
@@ -105,7 +107,7 @@ router.put(
  */
 router.put(
   "/process",
-  validateRequest(payoutInstuctionSchema, "body"),
+  validateRequest(payoutIdSchema, "body"),
   async (req, res, next) => {
     try {
       const data = req.body ?? {};
@@ -114,6 +116,33 @@ router.put(
        * @param {import("./stpPayment.schema.js").PayoutInstructionId} data
        */
       const result = await processPayoutInstuction(data);
+
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * PUT endpoint to process and import SOA
+ * @route PUT /stp/process
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @param {import('express').NextFunction} next - Express next middleware function
+ * @returns {void} Responds with "pong"
+ */
+router.put(
+  "/settlement",
+  validateRequest(settlementPayoutSchema, "body"),
+  async (req, res, next) => {
+    try {
+      const data = req.body ?? {};
+
+      /**
+       * @param {import("./stpPayment.schema.js").SettlementPayoutInstruction} data
+       */
+      const result = await settlementPayoutInstuction(data);
 
       res.status(200).json(result);
     } catch (error) {

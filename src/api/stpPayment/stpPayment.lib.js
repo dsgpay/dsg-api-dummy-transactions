@@ -8,12 +8,17 @@ import {
   transformSTP,
   upsertSTPPayment,
 } from "./stpPayment.model.js";
-import { importSTP, importFeeSTP } from "../../services/finance.js";
+import {
+  importSTP,
+  importFeeSTP,
+  importUpdateStatusSTP,
+} from "../../services/finance.js";
 import { findOneRates } from "../rates/rates.js";
 
 /**
  * @typedef {import("./stpPayment.schema.js").PayoutInstructionId} PayoutInstructionId
  * @typedef {import("./stpPayment.schema.js").CreatePayoutData} CreatePayoutData
+ * @typedef {import("./stpPayment.schema.js").SettlementPayoutInstruction} SettlementPayoutInstruction
  * @typedef {import("./stpPayment.model.js").STPPaymentModel} STPPaymentData
  */
 
@@ -258,6 +263,46 @@ export const initProcessWithSOA = async (data) => {
     const fee = await importFeeSTP(processData);
     console.log("fee :>> ", fee);
   }
+
+  const newData = await findSTPPaymentById(new ObjectId(id));
+
+  return transformSTP(newData);
+};
+
+/**
+ * Create a payout instruction
+ * @param {SettlementPayoutInstruction} data
+ * @returns {Promise<STPPaymentData>}
+ * @throws {Error} Throws an error if creation fails due to validation or DB issues.
+ */
+export const initSettlementWithSOA = async (data) => {
+  const { _id: id, paymentStatus } = data;
+
+  const stp = await findSTPPaymentById(new ObjectId(id), {
+    projection: {
+      _id: 1,
+      statementId: 1,
+      statementTicketFeeId: 1,
+    },
+  });
+  if (!stp) throw new ApiError(400, "Data not found.");
+
+  const { _id } = stp;
+
+  const settlement = {
+    paymentStatus,
+    ...(paymentStatus == "FAILED" && {
+      statusReason: "Invalid Account Details.",
+    }),
+  };
+
+  const processData = await upsertSTPPayment(
+    { _id: new ObjectId(_id) },
+    settlement
+  );
+
+  const soa = await importUpdateStatusSTP(processData);
+  console.log("soa :>> ", soa);
 
   const newData = await findSTPPaymentById(new ObjectId(id));
 

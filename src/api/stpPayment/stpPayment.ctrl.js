@@ -4,11 +4,13 @@ import {
   initFixingRates,
   initApprovePricing,
   initProcessWithSOA,
+  initSettlementWithSOA,
 } from "./stpPayment.lib.js";
 
 /**
  * @typedef {import("./stpPayment.schema.js").PayoutInstructionId} PayoutInstructionId
  * @typedef {import("./stpPayment.schema.js").CreatePayoutData} CreatePayoutData
+ * @typedef {import("./stpPayment.schema.js").SettlementPayoutInstruction} SettlementPayoutInstruction
  * @typedef {import("./stpPayment.model.js").STPPaymentModel} STPPaymentData
  */
 
@@ -66,6 +68,21 @@ export const approvePayoutInstuction = async (data) => {
 export const processPayoutInstuction = async (data) => {
   try {
     const result = await initProcessWithSOA(data);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Process a payout instruction
+ * @param {SettlementPayoutInstruction} data
+ * @returns {Promise<STPPaymentData>}
+ * @throws {Error} Throws an error if creation fails due to validation or DB issues.
+ */
+export const settlementPayoutInstuction = async (data) => {
+  try {
+    const result = await initSettlementWithSOA(data);
     return result;
   } catch (error) {
     throw error;
