@@ -13,8 +13,12 @@ import DB from "../../config/db.js";
  * @property {string} payoutChannel
  * @property {string} gatewayPartner
  * @property {string} payinSpread
+ * @property {string} payoutSpread
+ * @property {number} midRate
+ * @property {string} ticketRevenueCurrency
+ * @property {object} ticketRevenue
  */
-
+ 
 /** @typedef {import("mongodb").Collection<STPProductModel>} STPProductCollection */
 /** @typedef {import("mongodb").Filter<STPProductModel>} STPProductFilter */
 /** @typedef {import("mongodb").FindOptions<STPProductModel>} STPProductFindOptions */

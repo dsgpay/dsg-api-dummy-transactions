@@ -26,6 +26,7 @@ const mandatoryFieldsFakeValue = (
     payoutChannel,
     gatewayPartner,
     payinSpread,
+    payoutSpread,
   }
 ) => {
   switch (field) {
@@ -41,6 +42,10 @@ const mandatoryFieldsFakeValue = (
       );
     case "transactionType":
       return transactionType;
+    case "beneficiaryCurrencyCode":
+      return product.substring(3, 6);
+    case "senderCurrencyCode":
+      return product.substring(0, 3);
     case "beneficiaryCountryCode":
       return getCountryCodeByCurrency(product.substring(3, 6));
     case "beneficiaryBankCountryCode":
@@ -54,6 +59,8 @@ const mandatoryFieldsFakeValue = (
       return gatewayPartner;
     case "payinSpread":
       return payinSpread;
+    case "payoutSpread":
+      return payoutSpread;
     case "payinPartner":
       return corpId;
     case "senderName":
@@ -107,6 +114,8 @@ export const payoutInstructionFakeValue = (mandatoryFields, data) => {
     "product",
     "transactionType",
     "paymentAddress",
+    "senderCurrencyCode",
+    "beneficiaryCurrencyCode",
     "businessModel",
     "beneficiaryBankCountryCode",
     "beneficiaryCountryCode",
@@ -115,6 +124,7 @@ export const payoutInstructionFakeValue = (mandatoryFields, data) => {
     "payoutPartner",
     "gatewayPartner",
     "payinSpread",
+    "payoutSpread",
     "credit",
   ];
   const allFields = [

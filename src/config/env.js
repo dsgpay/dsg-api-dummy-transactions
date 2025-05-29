@@ -10,6 +10,7 @@ import { object, string, number } from "yup";
  * @property {string} DB_NAME
  * @property {string} JWT_SECRET
  * @property {number} PORT
+ * @property {string} FINANCE_API_URL
  */
 
 /** @type {import('yup').ObjectSchema<Env>} */
@@ -20,7 +21,7 @@ const envSchema = object({
   DB_NAME: string().required(),
   JWT_SECRET: string().min(8).required(),
   PORT: number().default(3000).required(),
-  xx: string(),
+  FINANCE_API_URL: string().required(),
 }).noUnknown(true);
 
 /**
@@ -60,4 +61,12 @@ export const server = {
 export const mongo = {
   url: envVars.MONGO_URL,
   db: envVars.DB_NAME,
+};
+
+/**
+ * MongoDB configuration object.
+ * @type {{ url: string }}
+ */
+export const finance = {
+  url: envVars.FINANCE_API_URL,
 };

@@ -4,6 +4,7 @@
 GET http://localhost:3000/dev/token
 
 ### [auth] Create Payout Instruction
+# @name paymentCreated
 POST http://localhost:3000/stp-payment/create
 Authorization: Bearer {{auth.response.body.token}}
 Content-Type: application/json
@@ -12,4 +13,36 @@ Content-Type: application/json
     "corpId": "DSGRFB",
     "product": "USDAUD",
     "amount": 10
+}
+
+### [auth] Fixing Rates
+# @name paymentFixedRates
+PUT http://localhost:3000/stp-payment/rates
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "_id": "{{paymentCreated.response.body._id}}"
+}
+
+
+### [auth] Approved With Pricing
+# @name paymentApprovedWithPricing
+PUT http://localhost:3000/stp-payment/approve
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "_id": "{{paymentCreated.response.body._id}}"
+}
+
+
+### [auth] Approved With Pricing
+# @name paymentProcessWithSOA
+PUT http://localhost:3000/stp-payment/process
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "_id": "{{paymentCreated.response.body._id}}"
 }
