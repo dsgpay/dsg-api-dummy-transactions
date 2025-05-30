@@ -45,7 +45,7 @@
  *                   example: "CREATED"
  *                 corpId:
  *                   type: string
- *                   example: DSGRFB"
+ *                   example: DSGRFB
  *                 product:
  *                   type: string
  *                   example: "USDAUD"
