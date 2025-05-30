@@ -24,6 +24,7 @@ MONGO_URL="mongodb://localhost:27017/DSG"
 DB_NAME="DSG"
 JWT_SECRET="ABCD1234"
 PORT="3000"
+FINANCE_API_URL="http://localhost:3001"
 ```
 
 Save and close the file (`Ctrl + X`, then `Y`, then `Enter`).
