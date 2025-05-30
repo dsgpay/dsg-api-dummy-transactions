@@ -12,6 +12,7 @@ import {
   importSTP,
   importFeeSTP,
   importUpdateStatusSTP,
+  importUpdateFailedSTP,
 } from "../../services/finance.js";
 import { findOneRates } from "../rates/rates.js";
 
@@ -302,7 +303,7 @@ export const initSettlementWithSOA = async (data) => {
 
   const { _id, paymentStatus: status } = stp;
 
-  if (!["TRANSFERING", "SETTLED"].includes(status))
+  if (!["TRANSFERRING", "SETTLED"].includes(status))
     throw new ApiError(400, "Method not allowed.");
 
   const settlement = {
@@ -317,8 +318,13 @@ export const initSettlementWithSOA = async (data) => {
     settlement
   );
 
-  const soa = await importUpdateStatusSTP(processData);
-  console.log("soa :>> ", soa);
+  if (status == "SETTLED" && paymentStatus == "FAILED") {
+    const soa = await importUpdateFailedSTP(processData);
+    console.log("soa :>> ", soa);
+  } else {
+    const soa = await importUpdateStatusSTP(processData);
+    console.log("soa :>> ", soa);
+  }
 
   const newData = await findSTPPaymentById(new ObjectId(id));
 

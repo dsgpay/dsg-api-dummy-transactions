@@ -1,8 +1,5 @@
 import currencyCodes from 'currency-codes';
-import en from 'i18n-iso-countries/langs/en.json' assert { type: 'json' };
 import countries from 'i18n-iso-countries';
-
-countries.registerLocale(en);
 
 /**
  * Get a default ISO 3166-1 alpha-2 country code by ISO 4217 currency code

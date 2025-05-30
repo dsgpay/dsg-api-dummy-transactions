@@ -80,3 +80,29 @@ export const importUpdateStatusSTP = async ({ _id }) => {
     throw error;
   }
 };
+
+/**
+ * importSTP fail by finance api
+ * @async
+ * @param {{ _id: any; }} param
+ * @returns {Promise<object>}
+ */
+export const importUpdateFailedSTP = async ({ _id }) => {
+  try {
+    return await request({
+      method: "PUT",
+      url: finance?.url + "/v1/stp-payment/refund-settled-record",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + generateToken(),
+      },
+      data: {
+        _id: _id?.toString(),
+        useNow: true,
+        useWorker: false,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
