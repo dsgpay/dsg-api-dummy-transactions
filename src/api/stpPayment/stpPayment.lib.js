@@ -297,12 +297,13 @@ export const initSettlementWithSOA = async (data) => {
       _id: 1,
       statementId: 1,
       statementTicketFeeId: 1,
+      paymentStatus: 1,
     },
   });
   if (!stp) throw new ApiError(400, "Data not found.");
 
   const { _id, paymentStatus: status } = stp;
-
+  console.log('current status :>> ', status);
   if (!["TRANSFERRING", "SETTLED"].includes(status))
     throw new ApiError(400, "Method not allowed.");
 
