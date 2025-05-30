@@ -87,7 +87,7 @@ export const importUpdateStatusSTP = async ({ _id }) => {
  * @param {{ _id: any; }} param
  * @returns {Promise<object>}
  */
-export const importUpdateFailedSTP = async ({ _id }) => {
+export const importUpdateSettled2FailedSTP = async ({ _id }) => {
   try {
     return await request({
       method: "PUT",

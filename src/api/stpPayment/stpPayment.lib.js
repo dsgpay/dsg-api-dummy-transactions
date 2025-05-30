@@ -12,7 +12,7 @@ import {
   importSTP,
   importFeeSTP,
   importUpdateStatusSTP,
-  importUpdateFailedSTP,
+  importUpdateSettled2FailedSTP,
 } from "../../services/finance.js";
 import { findOneRates } from "../rates/rates.js";
 
@@ -319,7 +319,7 @@ export const initSettlementWithSOA = async (data) => {
   );
 
   if (status == "SETTLED" && paymentStatus == "FAILED") {
-    const soa = await importUpdateFailedSTP(processData);
+    const soa = await importUpdateSettled2FailedSTP(processData);
     console.log("soa :>> ", soa);
   } else {
     const soa = await importUpdateStatusSTP(processData);
