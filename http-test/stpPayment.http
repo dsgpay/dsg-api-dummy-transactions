@@ -49,7 +49,18 @@ Content-Type: application/json
 
 
 ### [auth] Approved With Pricing
-# @name paymentSettlementWithSOA
+# @name paymentSettledWithSOA
+PUT http://localhost:3000/stp-payment/settlement
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "_id": "{{paymentCreated.response.body._id}}",
+    "paymentStatus": "SETTLED"
+}
+
+### [auth] Approved With Pricing
+# @name paymentFailedWithSOA
 PUT http://localhost:3000/stp-payment/settlement
 Authorization: Bearer {{auth.response.body.token}}
 Content-Type: application/json
