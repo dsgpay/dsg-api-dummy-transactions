@@ -9,6 +9,7 @@ import DB from "../../config/db.js";
  * @property {string} corpId
  * @property {string} product
  * @property {number} amount
+ * @property {string} paymentStatus
  * @property {string=} beneficiaryCountryCode
  * @property {string=} beneficiaryBankCountryCode
  * @property {string} transactionType

@@ -94,6 +94,7 @@ export const initFixingRates = async (data) => {
       amount: 1,
       payinSpread: 1,
       payoutSpread: 1,
+      paymentStatus: 1,
     },
   });
   if (!stp) throw new ApiError(400, "Data not found.");
@@ -105,7 +106,11 @@ export const initFixingRates = async (data) => {
     amount,
     payinSpread = 0,
     payoutSpread = 0,
+    paymentStatus,
   } = stp;
+
+  if (paymentStatus != "CREATED")
+    throw new ApiError(400, "Method not allowed.");
 
   const stpProduct = await findOneSTPProduct(
     {
@@ -185,11 +190,15 @@ export const initApprovePricing = async (data) => {
       _id: 1,
       corpId: 1,
       product: 1,
+      paymentStatus: 1,
     },
   });
   if (!stp) throw new ApiError(400, "Data not found.");
 
-  const { _id, product, corpId } = stp;
+  const { _id, product, corpId, paymentStatus } = stp;
+
+  if (paymentStatus != "CREATED")
+    throw new ApiError(400, "Method not allowed.");
 
   const ticketFee = await findOneSTPProduct(
     {
@@ -236,13 +245,17 @@ export const initProcessWithSOA = async (data) => {
   const stp = await findSTPPaymentById(new ObjectId(id), {
     projection: {
       _id: 1,
+      paymentStatus: 1,
       statementId: 1,
       statementTicketFeeId: 1,
     },
   });
   if (!stp) throw new ApiError(400, "Data not found.");
 
-  const { _id, statementId, statementTicketFeeId } = stp;
+  const { _id, paymentStatus, statementId, statementTicketFeeId } = stp;
+
+  if (paymentStatus != "APPROVED")
+    throw new ApiError(400, "Method not allowed.");
 
   const process = {
     paymentStatus: "TRANSFERRING",
@@ -287,7 +300,10 @@ export const initSettlementWithSOA = async (data) => {
   });
   if (!stp) throw new ApiError(400, "Data not found.");
 
-  const { _id } = stp;
+  const { _id, paymentStatus: status } = stp;
+
+  if (!["TRANSFERING", "SETTLED"].includes(status))
+    throw new ApiError(400, "Method not allowed.");
 
   const settlement = {
     paymentStatus,
