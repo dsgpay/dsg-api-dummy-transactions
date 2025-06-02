@@ -8,7 +8,7 @@ import ApiError from "../../utils/ApiError.js";
 const router = Router();
 
 /**
- * POST endpoint to create STP payment
+ * POST endpoint to get the Token
  * @route POST /stp/create
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object

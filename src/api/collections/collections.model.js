@@ -113,6 +113,7 @@ export function transformCollections(data) {
     "gatewayPartner",
     "virtualAccountNo",
     "revenueRate",
+    "amountUSD",
     "commissionStatus",
     "commission",
     "commissionCurrency",

@@ -11,8 +11,18 @@ Content-Type: application/json
 
 {
     "corpId": "DSGRFB",
-    "currencyIsoCode": "USD",
-    "amount": 10,
-    "countryCode": "US",
+    "currencyIsoCode": "AUD",
+    "amount": 100,
+    "countryCode": "AU",
     "type": "local"
+}
+
+### [auth] Create Payout Instruction
+# @name collectionsRates
+PUT http://localhost:3000/collections/rates
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "_id": "{{collectionsCreated.response.body._id}}"
 }

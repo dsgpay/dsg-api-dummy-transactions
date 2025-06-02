@@ -1,5 +1,5 @@
 // @ts-check
-import { initCollections } from "./collections.lib.js";
+import { initCollections, initRatesCollections } from "./collections.lib.js";
 
 /**
  * @typedef {import("./collections.schema.js").CollectionsId} CollectionsId
@@ -8,7 +8,7 @@ import { initCollections } from "./collections.lib.js";
  */
 
 /**
- * Create a payout instruction
+ * Create a collections
  * @param {CreateCollections} data
  * @returns {Promise<CollectionsModel>}
  * @throws {Error} Throws an error if creation fails due to validation or DB issues.
@@ -16,6 +16,21 @@ import { initCollections } from "./collections.lib.js";
 export const createCollections = async (data) => {
   try {
     const result = await initCollections(data);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Update Rates a collections
+ * @param {CollectionsId} data
+ * @returns {Promise<CollectionsModel>}
+ * @throws {Error} Throws an error if creation fails due to validation or DB issues.
+ */
+export const ratesCollections = async (data) => {
+  try {
+    const result = await initRatesCollections(data);
     return result;
   } catch (error) {
     throw error;

@@ -42,6 +42,6 @@ export const createCollectionschema = object({
 /**
  * @type {import('yup').ObjectSchema<CollectionsId>}
  */
-export const payoutIdSchema = object({
+export const collectionsIdSchema = object({
   _id: string().required(),
 }).unknown(false);

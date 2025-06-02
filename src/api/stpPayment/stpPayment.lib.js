@@ -81,7 +81,7 @@ export const initPayoutInstruction = async (data) => {
 };
 
 /**
- * Create a payout instruction
+ * Update Rates a payout instruction
  * @param {PayoutInstructionId} data
  * @returns {Promise<STPPaymentData>}
  * @throws {Error} Throws an error if creation fails due to validation or DB issues.
@@ -179,7 +179,7 @@ export const initFixingRates = async (data) => {
 };
 
 /**
- * Create a payout instruction
+ * Update Pricing a payout instruction
  * @param {PayoutInstructionId} data
  * @returns {Promise<STPPaymentData>}
  * @throws {Error} Throws an error if creation fails due to validation or DB issues.
@@ -236,7 +236,7 @@ export const initApprovePricing = async (data) => {
 };
 
 /**
- * Create a payout instruction
+ * Update SOA a payout instruction
  * @param {PayoutInstructionId} data
  * @returns {Promise<STPPaymentData>}
  * @throws {Error} Throws an error if creation fails due to validation or DB issues.
@@ -285,7 +285,7 @@ export const initProcessWithSOA = async (data) => {
 };
 
 /**
- * Create a payout instruction
+ * Update Settlement a payout instruction
  * @param {SettlementPayoutInstruction} data
  * @returns {Promise<STPPaymentData>}
  * @throws {Error} Throws an error if creation fails due to validation or DB issues.

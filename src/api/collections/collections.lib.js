@@ -1,7 +1,14 @@
 // @ts-check
-import { transformCollections, upsertCollections } from "./collections.model.js";
+import { ObjectId } from "mongodb";
+
+import {
+  findCollectionsById,
+  transformCollections,
+  upsertCollections,
+} from "./collections.model.js";
 import { collectionsFakeValue } from "./collections.faker.js";
 import ApiError from "../../utils/ApiError.js";
+import { findOneRates } from "../rates/rates.js";
 
 /**
  * @typedef {import("./collections.schema.js").CollectionsId} CollectionsId
@@ -10,7 +17,7 @@ import ApiError from "../../utils/ApiError.js";
  */
 
 /**
- * Create a payout instruction
+ * Create a collections
  * @param {CreateCollections} data
  * @returns {Promise<CollectionsModel>}
  * @throws {Error} Throws an error if creation fails due to validation or DB issues.
@@ -21,6 +28,50 @@ export const initCollections = async (data) => {
   const { billPaymentRef1, ...rest } = tData;
 
   const newData = await upsertCollections({ billPaymentRef1 }, rest);
+
+  return transformCollections(newData);
+};
+
+/**
+ * Update rates a collections
+ * @param {CollectionsId} data
+ * @returns {Promise<CollectionsModel>}
+ * @throws {Error} Throws an error if creation fails due to validation or DB issues.
+ */
+export const initRatesCollections = async (data) => {
+  const { _id: id } = data;
+
+  const stp = await findCollectionsById(new ObjectId(id), {
+    projection: {
+      currencyIsoCode: 1,
+      amount: 1,
+    },
+  });
+  if (!stp) throw new ApiError(400, "Data not found.");
+  const { _id, currencyIsoCode, amount } = stp;
+
+  const revRate = await findOneRates(
+    {
+      product: "USD" + currencyIsoCode,
+    },
+    {
+      projection: {
+        lastMidRate: 1,
+      },
+    }
+  );
+  if (!revRate) throw new ApiError(400, "revRate does not exists.");
+
+  const revenueRate = revRate?.lastMidRate;
+  const amountUSD = parseFloat(amount) / revenueRate;
+
+  const newData = await upsertCollections(
+    { _id: new ObjectId(_id) },
+    {
+      revenueRate,
+      amountUSD,
+    }
+  );
 
   return transformCollections(newData);
 };
