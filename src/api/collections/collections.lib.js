@@ -9,6 +9,7 @@ import {
 import { collectionsFakeValue } from "./collections.faker.js";
 import ApiError from "../../utils/ApiError.js";
 import { findOneRates } from "../rates/rates.js";
+import { findOneCommission } from "../commission/commission.model.js";
 
 /**
  * @typedef {import("./collections.schema.js").CollectionsId} CollectionsId
@@ -72,6 +73,70 @@ export const initRatesCollections = async (data) => {
       amountUSD,
     }
   );
+
+  return transformCollections(newData);
+};
+
+/**
+ * Update commission a collections
+ * @param {CollectionsId} data
+ * @returns {Promise<CollectionsModel>}
+ * @throws {Error} Throws an error if creation fails due to validation or DB issues.
+ */
+export const initCommissionCollections = async (data) => {
+  const { _id: id } = data;
+
+  const collections = await findCollectionsById(new ObjectId(id), {
+    projection: {
+      corpID: 1,
+      currencyIsoCode: 1,
+      paymentAddress: 1,
+      transactionType: 1,
+      gatewayPartner: 1,
+      countryCode: 1,
+    },
+  });
+  if (!collections) throw new ApiError(400, "Data not found.");
+  const {
+    _id,
+    corpID: corpId,
+    currencyIsoCode: ccy,
+    countryCode,
+    paymentAddress,
+    transactionType,
+    gatewayPartner,
+  } = collections;
+
+  const comm = await findOneCommission(
+    {
+      corpId,
+      ccy,
+      paymentAddress,
+      transactionType,
+      countryCode,
+      gatewayPartner,
+      commissionCurrency: { $exists: true },
+      commission: { $exists: true },
+    },
+    {
+      projection: {
+        commissionCurrency: 1,
+        commission: 1,
+      },
+    }
+  );
+
+  if (!comm) throw new ApiError(400, "commission does not exists.");
+  const { commissionCurrency, commission } = comm;
+
+  const pricing = {
+    commissionStatus: "OK",
+    commissionCurrency,
+    commissionMatchedTier: comm?.[0],
+    commission: comm?.[0]?.fee,
+  };
+
+  const newData = await upsertCollections({ _id: new ObjectId(_id) }, pricing);
 
   return transformCollections(newData);
 };

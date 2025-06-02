@@ -1,5 +1,5 @@
 // @ts-check
-import { initCollections, initRatesCollections } from "./collections.lib.js";
+import { initCollections, initRatesCollections, initCommissionCollections } from "./collections.lib.js";
 
 /**
  * @typedef {import("./collections.schema.js").CollectionsId} CollectionsId
@@ -31,6 +31,21 @@ export const createCollections = async (data) => {
 export const ratesCollections = async (data) => {
   try {
     const result = await initRatesCollections(data);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Update Commission a collections
+ * @param {CollectionsId} data
+ * @returns {Promise<CollectionsModel>}
+ * @throws {Error} Throws an error if creation fails due to validation or DB issues.
+ */
+export const commissionCollections = async (data) => {
+  try {
+    const result = await initCommissionCollections(data);
     return result;
   } catch (error) {
     throw error;

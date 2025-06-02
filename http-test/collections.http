@@ -26,3 +26,13 @@ Content-Type: application/json
 {
     "_id": "{{collectionsCreated.response.body._id}}"
 }
+
+### [auth] Create Payout Instruction
+# @name collectionsCommission
+PUT http://localhost:3000/collections/commission
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "_id": "{{collectionsCreated.response.body._id}}"
+}
