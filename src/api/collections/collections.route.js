@@ -6,7 +6,12 @@ import {
   createCollectionschema,
   collectionsIdSchema,
 } from "./collections.schema.js";
-import { createCollections, ratesCollections, commissionCollections } from "./collections.ctrl.js";
+import {
+  createCollections,
+  ratesCollections,
+  commissionCollections,
+  importSOACollections,
+} from "./collections.ctrl.js";
 
 const router = Router();
 
@@ -91,4 +96,30 @@ router.put(
   }
 );
 
+/**
+ * PUT endpoint to import soa
+ * @route POST /collections/soa
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @param {import('express').NextFunction} next - Express next middleware function
+ * @returns {void} Responds with "pong"
+ */
+router.put(
+  "/soa",
+  validateRequest(collectionsIdSchema, "body"),
+  async (req, res, next) => {
+    try {
+      const data = req.body ?? {};
+
+      /**
+       * @param {import("./collections.schema.js").CollectionsId} data
+       */
+      const result = await importSOACollections(data);
+
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 export default router;

@@ -106,3 +106,53 @@ export const importUpdateSettled2FailedSTP = async ({ _id }) => {
     throw error;
   }
 };
+
+/**
+ * importSTP fail by finance api
+ * @async
+ * @param {{ _id: any; }} param
+ * @returns {Promise<object>}
+ */
+export const importCollection = async ({ _id }) => {
+  try {
+    return await request({
+      method: "POST",
+      url: finance?.url + "/v1/col-payment/import",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + generateToken(),
+      },
+      data: {
+        _id: _id?.toString(),
+        useNow: true,
+        useWorker: false,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * importSTP fail by finance api
+ * @async
+ * @param {{ _id: any; }} param
+ * @returns {Promise<object>}
+ */
+export const importCommission = async ({ _id }) => {
+  try {
+    return await request({
+      method: "POST",
+      url: finance?.url + "/v1/commission/single",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + generateToken(),
+      },
+      data: {
+        _id: _id?.toString(),
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};

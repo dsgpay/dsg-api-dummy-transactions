@@ -10,6 +10,7 @@ import { collectionsFakeValue } from "./collections.faker.js";
 import ApiError from "../../utils/ApiError.js";
 import { findOneRates } from "../rates/rates.js";
 import { findOneCommission } from "../commission/commission.model.js";
+import { importCollection, importCommission } from "../../services/finance.js";
 
 /**
  * @typedef {import("./collections.schema.js").CollectionsId} CollectionsId
@@ -137,6 +138,41 @@ export const initCommissionCollections = async (data) => {
   };
 
   const newData = await upsertCollections({ _id: new ObjectId(_id) }, pricing);
+
+  return transformCollections(newData);
+};
+
+/**
+ * Update SOA a collections
+ * @param {CollectionsId} data
+ * @returns {Promise<CollectionsModel>}
+ * @throws {Error} Throws an error if creation fails due to validation or DB issues.
+ */
+export const initSOACollections = async (data) => {
+  const { _id: id } = data;
+
+  const collections = await findCollectionsById(new ObjectId(id), {
+    projection: {
+      _id: 1,
+      statementId: 1,
+      statementCommissionId: 1,
+    },
+  });
+  if (!collections) throw new ApiError(400, "Data not found.");
+
+  const { statementId, statementCommissionId } = collections;
+
+  if (!statementId) {
+    const soa = await importCollection(collections);
+    console.log("soa :>> ", soa);
+  }
+
+  if (!statementCommissionId) {
+    const soa = await importCommission(collections);
+    console.log("soa :>> ", soa);
+  }
+
+  const newData = await findCollectionsById(new ObjectId(id));
 
   return transformCollections(newData);
 };
