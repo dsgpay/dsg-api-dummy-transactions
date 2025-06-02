@@ -15,6 +15,7 @@ import { errorConverter, errorHandler } from "./middlewares/errors.js";
 // Routes
 import devRoute from "./dev/dev.route.js";
 import stpPaymentRoute from "./stpPayment/stpPayment.route.js";
+import collectionsPaymentRoute from "./collections/collections.route.js";
 
 const logger = debug("api:index");
 
@@ -79,6 +80,7 @@ app.use("/dev", devRoute);
 
 // Dev
 app.use("/stp-payment", stpPaymentRoute);
+app.use("/collections", collectionsPaymentRoute);
 
 /**
  * Middleware to handle 404 errors for routes not found.

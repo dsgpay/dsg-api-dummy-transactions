@@ -16,18 +16,28 @@ import { number, object, string } from "yup";
  * @typedef {object} CreateCollections
  * @property {string} corpId - Uppercase string, required
  * @property {string} currencyIsoCode - 3-char uppercase string, required
+ * @property {string=} countryCode
  * @property {number} amount - Positive number, required
- * @property {"local" | "global"} [type] - Defaults to "local"
+ * @property {"local" | "global"} type - Defaults to "local"
  */
+
 /**
  * @type {import('yup').ObjectSchema<CreateCollections>}
  */
 export const createCollectionschema = object({
   corpId: string().required().uppercase(),
   currencyIsoCode: string().required().uppercase().min(3).max(3),
+  countryCode: string().when("type", (typeValue, schema) => {
+    /** @type {string} */
+    const value = Array.isArray(typeValue) ? typeValue[0] : typeValue;
+    if (value === "local") {
+      return schema.required().uppercase().min(2).max(2);
+    }
+    return schema.notRequired().uppercase().min(2).max(2);
+  }),
   amount: number().required().positive(),
   type: string().oneOf(["local", "global"]).default("local"),
-}).unknown(false);
+}).noUnknown(true);
 
 /**
  * @type {import('yup').ObjectSchema<CollectionsId>}

@@ -29,6 +29,11 @@ import DB from "../../config/db.js";
  * @property {string} statementId
  * @property {string} statementCommissionId
  * @property {number} revenueRate
+ * @property {number} amountUSD
+ * @property {string} payerName
+ * @property {string} payerAccountNumber
+ * @property {string} paymentDetails
+ * @property {string} payerNote
  */
 
 /** @typedef {import("mongodb").Collection<CollectionsModel>} CollectionsCollection */
@@ -38,7 +43,7 @@ import DB from "../../config/db.js";
 /** @typedef {import("mongodb").UpdateFilter<CollectionsModel>} CollectionsUpdateFilter */
 
 /** @type {CollectionsCollection} */
-const Collections = DB.collection("ds_corp_stp_payment");
+const Collections = DB.collection("ds_corp_payment");
 
 /**
  * Find a single document from the collection.
@@ -89,7 +94,7 @@ export async function findCollectionsById(id, options = {}) {
  * @param {object} data - Raw data input
  * @returns {CollectionsModel}
  */
-export function transformSTP(data) {
+export function transformCollections(data) {
   /** @type {Partial<CollectionsModel>} */
   const transformed = {};
 
@@ -106,8 +111,9 @@ export function transformSTP(data) {
     "transactionType",
     "countryCode",
     "gatewayPartner",
+    "virtualAccountNo",
     "revenueRate",
-    "ticketRevenueStatus",
+    "commissionStatus",
     "commission",
     "commissionCurrency",
     "statementId",

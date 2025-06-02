@@ -5,84 +5,59 @@ import { getCountryCodeByCurrency } from "../../helpers/country.js";
 const mandatoryFieldsFakeValue = (
   field,
   {
-    corpId,
-    product,
+    corpID,
+    currencyIsoCode,
+    countryCode,
     amount,
     transactionType,
     paymentAddress,
-    payoutChannel,
     gatewayPartner,
-    payinSpread,
-    payoutSpread,
   }
 ) => {
+  const type = faker.helpers.arrayElement(transactionType);
+  const payment = faker.helpers.arrayElement(paymentAddress);
+
   switch (field) {
-    case "corpId":
-      return corpId;
-    case "product":
-      return product;
+    case "corpID":
+      return corpID;
+    case "currencyIsoCode":
+      return currencyIsoCode;
+    case "countryCode":
+      return transactionType == "TT"
+        ? getCountryCodeByCurrency(currencyIsoCode)
+        : countryCode;
     case "amount":
-    case "credit":
       return (
-        amount ||
-        parseFloat(faker.finance.amount({ min: 100, max: 1000, dec: 2 }))
+        amount?.toString() ||
+        parseFloat(
+          faker.finance.amount({ min: 100, max: 1000, dec: 2 })
+        )?.toString()
       );
     case "transactionType":
-      return transactionType;
-    case "beneficiaryCurrencyCode":
-      return product.substring(3, 6);
-    case "senderCurrencyCode":
-      return product.substring(0, 3);
-    case "beneficiaryCountryCode":
-      return getCountryCodeByCurrency(product.substring(3, 6));
-    case "beneficiaryBankCountryCode":
-      return getCountryCodeByCurrency(product.substring(3, 6));
+    case "gatewayType":
+      return type;
     case "paymentAddress":
-      return paymentAddress;
-    case "payoutChannel":
-      return payoutChannel;
+    case "gatewayMethod":
+      return payment;
     case "gatewayPartner":
-    case "payoutPartner":
+    case "collector":
       return gatewayPartner;
-    case "payinSpread":
-      return payinSpread;
-    case "payoutSpread":
-      return payoutSpread;
-    case "payinPartner":
-      return corpId;
-    case "senderName":
-    case "beneficiaryName":
-      return faker.person.fullName();
-    case "senderAddress":
-    case "beneficiaryAddress":
-      return faker.location.streetAddress();
-    case "senderCity":
-    case "beneficiaryCity":
-      return faker.location.city();
-    case "senderState":
-    case "beneficiaryState":
-      return faker.location.state();
-    case "senderPostcode":
-    case "beneficiaryPostcode":
-      return faker.location.zipCode();
-    case "senderCountryCode":
-      return faker.location.countryCode();
-    case "beneficiaryAccountNumber":
-      return faker.finance.accountNumber();
-    case "senderCurrencyCode":
-      return product ? product.substring(0, 3) : faker.finance.currencyCode();
-    case "beneficiaryCurrencyCode":
-      return product ? product.substring(3, 6) : faker.finance.currencyCode();
-    case "beneficiaryBSBCode":
-      return faker.string.numeric(6);
-    case "externalReference":
+    case "billPaymentRef1":
       return faker.string.alphanumeric(10);
-    case "businessModel":
-      return faker.helpers.arrayElement(["B2B", "B2C", "C2C"]);
-    case "transactionType":
-      return transactionType;
-    case "paymentAddress":
-      return paymentAddress;
+    case "billPaymentRef2":
+      return faker.string.alphanumeric(10);
+    case "payerName":
+      return faker.person.fullName();
+    case "payerAccountNumber":
+      return faker.finance.accountNumber();
+    case "gatewayRefId":
+      return faker.string.uuid();
+    case "payerNote":
+      return faker.finance.transactionDescription();
+    case "virtualAccountNo":
+      return faker.finance.accountNumber();
+    case "paymentDetails":
+      return faker.finance.transactionDescription();
     default:
       return "N/A";
   }
@@ -95,23 +70,23 @@ const mandatoryFieldsFakeValue = (
  */
 export const collectionsFakeValue = (data) => {
   const defaultMandatoryFields = [
-    "corpId",
+    "corpID",
     "amount",
-    "product",
+    "currencyIsoCode",
+    "countryCode",
     "transactionType",
     "paymentAddress",
-    "senderCurrencyCode",
-    "beneficiaryCurrencyCode",
-    "businessModel",
-    "beneficiaryBankCountryCode",
-    "beneficiaryCountryCode",
-    "payoutChannel",
-    "payinPartner",
-    "payoutPartner",
     "gatewayPartner",
-    "payinSpread",
-    "payoutSpread",
-    "credit",
+    "billPaymentRef1",
+    "billPaymentRef2",
+    "payerName",
+    "payerAccountNumber",
+    "gatewayRefId",
+    "payerNote",
+    "paymentDetails",
+    "virtualAccountNo",
+    "collector",
+    "gatewayMethod",
   ];
   const allFields = [...new Set([...defaultMandatoryFields])];
   return allFields.reduce(
@@ -120,15 +95,15 @@ export const collectionsFakeValue = (data) => {
       return acc;
     },
     {
-      createdAt: new Date(),
-      paymentStatus: "CREATED",
-      complianceStatus: "completed",
+      createdTimestamp: new Date(),
+      paymentStatus: "COLELCTED",
       notifyStatus: "AWAITING_CALLBACK",
-      updatedAt: new Date(),
-      complianceQueue: true,
-      stpSystem: true,
-      ...compliances,
-      balanceStatus: "active",
+      reportStatus: "NOT_REQUIRED",
+      updatedTimestamp: new Date(),
+      payinNotification: true,
+      appNotificationQueue: true,
+      paymentType: "payin",
+      payinMethod: "bank",
     }
   );
 };

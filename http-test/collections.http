@@ -1,0 +1,18 @@
+@baseUrl = http://localhost:3000
+
+# @name auth
+GET http://localhost:3000/dev/token
+
+### [auth] Create Payout Instruction
+# @name collectionsCreated
+POST http://localhost:3000/collections/create
+Authorization: Bearer {{auth.response.body.token}}
+Content-Type: application/json
+
+{
+    "corpId": "DSGRFB",
+    "currencyIsoCode": "USD",
+    "amount": 10,
+    "countryCode": "US",
+    "type": "local"
+}
