@@ -1,5 +1,12 @@
 // @ts-check
 import { Router } from "express";
+
+import { validateRequest } from "../middlewares/validation.js";
+import {
+  payoutIdSchema,
+  createPayoutInstuctionSchema,
+  settlementPayoutSchema,
+} from "./stpPayment.schema.js";
 import {
   createPayoutInstuction,
   ratesPayoutInstuction,
@@ -7,12 +14,6 @@ import {
   processPayoutInstuction,
   settlementPayoutInstuction,
 } from "./stpPayment.ctrl.js";
-import { validateRequest } from "../middlewares/validation.js";
-import {
-  payoutIdSchema,
-  createPayoutInstuctionSchema,
-  settlementPayoutSchema,
-} from "./stpPayment.schema.js";
 
 const router = Router();
 

@@ -22,11 +22,16 @@ import DB from "../../config/db.js";
  * @property {number=} midRate
  * @property {number=} fxRate
  * @property {number=} bankRate
+ * @property {number=} fundCurrencyRate
+ * @property {number=} payoutCurrencyRate
  * @property {string=} ticketRevenueStatus
  * @property {string=} ticketRevenueCurrency
  * @property {object=} ticketRevenueMatchedTier
  * @property {number=} ticketRevenue
+ * @property {Date} createdAt
+ * @property {Date} updatedAt
  * @property {Date=} approvedDate
+ * @property {Date=} settlementDate
  * @property {string} payoutConfirmId
  * @property {string} statementId
  * @property {string} statementTicketFeeId
@@ -105,6 +110,8 @@ export function transformSTP(data) {
     "amount",
     "paymentStatus",
     "externalReference",
+    "paymentAddress",
+    "transactionType",
     "createdAt",
     "midRate",
     "fxRate",
@@ -119,7 +126,7 @@ export function transformSTP(data) {
     "statementTicketFeeId",
     "statementRefundId",
     "refundId",
-    "otherId"
+    "otherId",
   ];
 
   fields.forEach((field) => {

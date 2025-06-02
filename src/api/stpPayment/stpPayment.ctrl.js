@@ -9,14 +9,14 @@ import {
 
 /**
  * @typedef {import("./stpPayment.schema.js").PayoutInstructionId} PayoutInstructionId
- * @typedef {import("./stpPayment.schema.js").CreatePayoutData} CreatePayoutData
+ * @typedef {import("./stpPayment.schema.js").CreatePayoutInstruction} CreatePayoutInstruction
  * @typedef {import("./stpPayment.schema.js").SettlementPayoutInstruction} SettlementPayoutInstruction
  * @typedef {import("./stpPayment.model.js").STPPaymentModel} STPPaymentData
  */
 
 /**
  * Create a payout instruction
- * @param {CreatePayoutData} data
+ * @param {CreatePayoutInstruction} data
  * @returns {Promise<STPPaymentData>}
  * @throws {Error} Throws an error if creation fails due to validation or DB issues.
  */

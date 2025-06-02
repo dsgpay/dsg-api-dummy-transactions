@@ -1,5 +1,6 @@
 // @ts-check
 import { ObjectId } from "mongodb";
+
 import ApiError from "../../utils/ApiError.js";
 import { findOneSTPProduct } from "../stpProduct/stpProduct.model.js";
 import { payoutInstructionFakeValue } from "./stpPayment.faker.js";
@@ -18,14 +19,14 @@ import { findOneRates } from "../rates/rates.js";
 
 /**
  * @typedef {import("./stpPayment.schema.js").PayoutInstructionId} PayoutInstructionId
- * @typedef {import("./stpPayment.schema.js").CreatePayoutData} CreatePayoutData
+ * @typedef {import("./stpPayment.schema.js").CreatePayoutInstruction} CreatePayoutInstruction
  * @typedef {import("./stpPayment.schema.js").SettlementPayoutInstruction} SettlementPayoutInstruction
  * @typedef {import("./stpPayment.model.js").STPPaymentModel} STPPaymentData
  */
 
 /**
  * Create a payout instruction
- * @param {CreatePayoutData} data
+ * @param {CreatePayoutInstruction} data
  * @returns {Promise<STPPaymentData>}
  * @throws {Error} Throws an error if creation fails due to validation or DB issues.
  */
@@ -303,7 +304,7 @@ export const initSettlementWithSOA = async (data) => {
   if (!stp) throw new ApiError(400, "Data not found.");
 
   const { _id, paymentStatus: status } = stp;
-  console.log('current status :>> ', status);
+  console.log("current status :>> ", status);
   if (!["TRANSFERRING", "SETTLED"].includes(status))
     throw new ApiError(400, "Method not allowed.");
 

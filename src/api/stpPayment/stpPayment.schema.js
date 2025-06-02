@@ -13,18 +13,6 @@ import { number, object, string } from "yup";
  */
 
 /**
- * @typedef {object} CreatePayoutData
- * @property {string} corpId
- * @property {string} product
- * @property {number} amount
- * @property {string} type
- * @property {PaymentStatus=} paymentStatus
- * @property {ObjectId=} _id
- * @property {string=} externalReference
- * @property {Date=} createdAt
- */
-
-/**
  * @typedef {object} CreatePayoutInstruction
  * @property {string} corpId - Uppercase string, required
  * @property {string} product - 6-char uppercase string, required
